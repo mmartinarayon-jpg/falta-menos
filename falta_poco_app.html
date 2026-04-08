@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#fdf6ee">
+<title>¡Falta Poco!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #fdf6ee;
+  --navy: #1e1340;
+  --purple: #6c3fc5;
+  --purple-light: #ede8fb;
+  --pink: #e0185e;
+  --pink-light: #fde8f1;
+  --gold: #d4900a;
+  --gold-light: #fef5dc;
+  --green: #0b7a5c;
+  --green-light: #dcf5ed;
+  --orange: #c95c10;
+  --orange-light: #feeadb;
+  --gray: #6b7280;
+  --gray-light: #f4f0eb;
+  --white: #ffffff;
+  --shadow: 0 2px 16px rgba(30,19,64,0.08);
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--cream);
+  color: var(--navy);
+  min-height: 100vh;
+  padding-bottom: 32px;
+}
+
+/* HEADER */
+.header {
+  background: var(--navy);
+  padding: 52px 20px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: rgba(108,63,197,0.3);
+  border-radius: 50%;
+}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: -30px;
+  width: 140px; height: 140px;
+  background: rgba(224,24,94,0.2);
+  border-radius: 50%;
+}
+.header-inner { position: relative; z-index: 1; }
+.header-tag {
+  font-size: 10px; font-weight: 600; letter-spacing: 3px;
+  text-transform: uppercase; color: rgba(255,255,255,0.5);
+  margin-bottom: 6px;
+}
+.header-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 42px; font-weight: 700; color: white;
+  line-height: 1; margin-bottom: 4px;
+}
+.header-title span { color: #f472b6; }
+.header-sub { font-size: 12px; color: rgba(255,255,255,0.55); font-weight: 300; margin-bottom: 20px; }
+
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.stat-card {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-sm);
+  padding: 10px 8px; text-align: center;
+}
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 700; color: white; display: block; line-height: 1;
+}
+.stat-lbl { font-size: 8px; font-weight: 500; letter-spacing: 0.5px; color: rgba(255,255,255,0.5); margin-top: 2px; display: block; text-transform: uppercase; }
+.stat-card.s-green .stat-num { color: #6ee7b7; }
+.stat-card.s-purple .stat-num { color: #c4b5fd; }
+.stat-card.s-pink .stat-num { color: #f9a8d4; }
+.stat-card.s-gold .stat-num { color: #fcd34d; }
+
+/* PROGRESS BAR */
+.progress-section { padding: 16px 20px 0; }
+.progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.progress-label { font-size: 11px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
+.progress-pct { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--purple); }
+.progress-bar { height: 8px; background: var(--purple-light); border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--pink)); border-radius: 99px; transition: width 0.6s cubic-bezier(.4,0,.2,1); }
+
+/* SECTION TITLES */
+.section { padding: 20px 20px 0; }
+.section-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--purple);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--purple-light); }
+
+/* MATERIAS */
+.materias-list { display: flex; flex-direction: column; gap: 6px; }
+.materia-item {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--white); border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  box-shadow: var(--shadow);
+  border-left: 3px solid transparent;
+}
+.materia-item.ok { border-left-color: var(--green); }
+.materia-item.curso { border-left-color: var(--purple); }
+.materia-item.prox { border-left-color: var(--gold); }
+.materia-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.materia-dot.ok { background: var(--green); }
+.materia-dot.curso { background: var(--purple); }
+.materia-dot.prox { background: var(--gold); }
+.materia-name { font-size: 12.5px; color: var(--navy); flex: 1; line-height: 1.3; }
+.materia-badge {
+  font-size: 9px; font-weight: 600; padding: 3px 8px;
+  border-radius: 99px; white-space: nowrap; flex-shrink: 0;
+}
+.materia-badge.ok { background: var(--green-light); color: var(--green); }
+.materia-badge.curso { background: var(--purple-light); color: var(--purple); }
+.materia-badge.prox { background: var(--gold-light); color: var(--gold); }
+
+/* CALENDARIO */
+.cal-grid { display: flex; flex-direction: column; gap: 10px; }
+
+.cal-row {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.cal-row-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.cal-row-icon {
+  width: 34px; height: 34px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.cal-row-info { flex: 1; }
+.cal-row-day { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.cal-row-materia { font-size: 12px; font-weight: 400; color: var(--gray); margin-top: 1px; }
+.cal-row-count { font-size: 11px; font-weight: 600; text-align: right; white-space: nowrap; }
+
+/* row colors */
+.row-l .cal-row-icon { background: var(--purple-light); color: var(--purple); }
+.row-l .cal-row-day { color: var(--purple); }
+.row-l .cal-row-count { color: var(--purple); }
+.row-m .cal-row-icon { background: var(--pink-light); color: var(--pink); }
+.row-m .cal-row-day { color: var(--pink); }
+.row-m .cal-row-count { color: var(--pink); }
+.row-j .cal-row-icon { background: var(--gold-light); color: var(--gold); }
+.row-j .cal-row-day { color: var(--gold); }
+.row-j .cal-row-count { color: var(--gold); }
+.row-v .cal-row-icon { background: var(--green-light); color: var(--green); }
+.row-v .cal-row-day { color: var(--green); }
+.row-v .cal-row-count { color: var(--green); }
+
+.cal-months-wrap { padding: 10px 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.month-row { display: flex; align-items: center; gap: 6px; }
+.month-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  width: 32px; flex-shrink: 0; color: var(--gray);
+}
+.days-wrap { display: flex; flex-wrap: wrap; gap: 5px; flex: 1; }
+
+.day-btn {
+  width: 36px; height: 36px; border-radius: 8px;
+  border: 1.5px solid transparent;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600;
+  cursor: pointer; position: relative;
+  transition: transform 0.12s, opacity 0.12s;
+  user-select: none;
+}
+.day-btn:active { transform: scale(0.9); }
+
+/* day colors per materia */
+.row-l .day-btn { background: var(--purple-light); color: var(--purple); border-color: #d4c8f5; }
+.row-m .day-btn { background: var(--pink-light); color: var(--pink); border-color: #f5c0d8; }
+.row-j .day-btn { background: var(--gold-light); color: var(--gold); border-color: #f5dfa0; }
+.row-v .day-btn { background: var(--green-light); color: var(--green); border-color: #a8e6d4; }
+
+.day-btn.done {
+  opacity: 0.35;
+}
+.day-btn.done::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 8%;
+  width: 84%; height: 2.5px;
+  background: currentColor;
+  border-radius: 2px;
+  transform: rotate(-15deg);
+  opacity: 0.7;
+}
+.day-btn.today {
+  box-shadow: 0 0 0 2.5px var(--pink);
+  opacity: 1 !important;
+}
+.day-btn.today::before {
+  content: '●';
+  position: absolute;
+  top: -1px; right: -1px;
+  font-size: 6px;
+  color: var(--pink);
+}
+
+/* FOOTER */
+.footer {
+  margin: 28px 20px 0;
+  background: var(--navy);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  text-align: center;
+}
+.footer-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.5;
+}
+.footer-hint {
+  font-size: 10px; color: rgba(255,255,255,0.3);
+  margin-top: 8px;
+}
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: var(--navy); color: white;
+  padding: 10px 20px; border-radius: 99px;
+  font-size: 12px; font-weight: 500;
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  pointer-events: none; z-index: 100; white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-tag">Comunicación Social · Facultad</div>
+    <div class="header-title">¡Falta <span>poco!</span></div>
+    <div class="header-sub">16 marzo — 3 julio 2026 · 64 clases</div>
+    <div class="stats-row">
+      <div class="stat-card s-green">
+        <span class="stat-num">10</span>
+        <span class="stat-lbl">Aprobadas</span>
+      </div>
+      <div class="stat-card s-purple">
+        <span class="stat-num">4</span>
+        <span class="stat-lbl">En curso</span>
+      </div>
+      <div class="stat-card s-pink" id="stat-cursadas">
+        <span class="stat-num" id="num-cursadas">–</span>
+        <span class="stat-lbl">Cursadas</span>
+      </div>
+      <div class="stat-card s-gold" id="stat-faltan">
+        <span class="stat-num" id="num-faltan">–</span>
+        <span class="stat-lbl">Faltan</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="progress-section">
+  <div class="progress-header">
+    <span class="progress-label">Progreso del cuatrimestre</span>
+    <span class="progress-pct" id="pct-text">0%</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Materias</div>
+  <div class="materias-list">
+    <div class="materia-item ok"><div class="materia-dot ok"></div><div class="materia-name">Filosofía, lenguajes y comunicación</div><div class="materia-badge ok">✓ OK</div></div>
+    <div class="materia-item ok"><div class="materia-dot ok"></div><div class="materia-name">Ecología de los medios</div><div class="materia-badge ok">✓ OK</div></div>
+    <div class="materia-item ok"><div class="materia-dot ok"></div><div class="materia-name">Escritura</div><div class="materia-badge ok">✓ OK</div></div>
+    <div class="materia-item ok"><div class="materia-dot ok"></div><div class="materia-name">Semiótica y análisis del discurso</div><div class="materia-badge ok">✓ OK</div></div>
+    <div class="materia-item ok"><div class="materia-dot ok"></div><div class="materia-name">Sociología</div><div class="materia-badge ok">✓ OK</div></div>
+    <div class="materia-item ok"><div class="materia-dot ok"></div><div class="materia-name">Medios audiovisuales e interactivos I</div><div class="materia-badge ok">✓ OK</div></div>
+    <div class="materia-item curso"><div class="materia-dot curso"></div><div class="materia-name">Comunicación Institucional ★</div><div class="materia-badge curso">En curso</div></div>
+    <div class="materia-item curso"><div class="materia-dot curso"></div><div class="materia-name">Economía y gestión de empresas ★</div><div class="materia-badge curso">En curso</div></div>
+    <div class="materia-item ok"><div class="materia-dot ok"></div><div class="materia-name">Medios audiovisuales e interactivos II</div><div class="materia-badge ok">✓ OK</div></div>
+    <div class="materia-item ok"><div class="materia-dot ok"></div><div class="materia-name">Ética y legislación de prensa</div><div class="materia-badge ok">✓ OK</div></div>
+    <div class="materia-item ok"><div class="materia-dot ok"></div><div class="materia-name">Ciencia política</div><div class="materia-badge ok">✓ OK</div></div>
+    <div class="materia-item ok"><div class="materia-dot ok"></div><div class="materia-name">Técnicas de investigación del mercado</div><div class="materia-badge ok">✓ OK</div></div>
+    <div class="materia-item curso"><div class="materia-dot curso"></div><div class="materia-name">Comunicación Interdisciplinaria ★</div><div class="materia-badge curso">En curso</div></div>
+    <div class="materia-item curso"><div class="materia-dot curso"></div><div class="materia-name">Opinión Pública ★</div><div class="materia-badge curso">En curso</div></div>
+    <div class="materia-item prox"><div class="materia-dot prox"></div><div class="materia-name">Examen de Inglés</div><div class="materia-badge prox">Próximamente</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Calendario — tocá para tachar</div>
+  <div class="cal-grid" id="cal-grid"></div>
+</div>
+
+<div class="footer">
+  <div class="footer-text">"Cada clase tachada es un paso más hacia tu título." 🎓</div>
+  <div class="footer-hint">Los cambios se guardan automáticamente en tu dispositivo</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DATA = {
+  l: { label: 'LUNES', materia: 'Com. Interdisciplinaria', icon: 'L', cls: 'row-l',
+    months: { Mar: [16,23,30], Abr: [6,13,20,27], May: [4,11,18,25], Jun: [1,8,15,22,29], Jul: [] }},
+  m: { label: 'MIÉRCOLES', materia: 'Com. Institucional', icon: 'M', cls: 'row-m',
+    months: { Mar: [18,25], Abr: [1,8,15,22,29], May: [6,13,20,27], Jun: [3,10,17,24], Jul: [1] }},
+  j: { label: 'JUEVES', materia: 'Economía', icon: 'J', cls: 'row-j',
+    months: { Mar: [19,26], Abr: [2,9,16,23,30], May: [7,14,21,28], Jun: [4,11,18,25], Jul: [2] }},
+  v: { label: 'VIERNES', materia: 'Opinión Pública', icon: 'V', cls: 'row-v',
+    months: { Mar: [20,27], Abr: [3,10,17,24], May: [1,8,15,22,29], Jun: [5,12,19,26], Jul: [3] }}
+};
+
+const MONTH_NUM = { Mar: 3, Abr: 4, May: 5, Jun: 6, Jul: 7 };
+const TODAY = new Date(2026, 3, 8); // April 8, 2026
+
+let done = JSON.parse(localStorage.getItem('fp_done') || '{}');
+
+function key(wd, month, day) { return `${wd}_${month}_${day}`; }
+
+function isPast(month, day) {
+  const d = new Date(2026, MONTH_NUM[month] - 1, day);
+  return d < TODAY;
+}
+function isToday(month, day) {
+  const d = new Date(2026, MONTH_NUM[month] - 1, day);
+  return d.getTime() === TODAY.getTime();
+}
+
+function countTotal() {
+  return Object.values(DATA).reduce((s, r) => s + Object.values(r.months).flat().length, 0);
+}
+function countDone() {
+  return Object.keys(done).filter(k => done[k]).length;
+}
+
+function updateStats() {
+  const total = countTotal();
+  const doneN = countDone();
+  const pct = Math.round(doneN / total * 100);
+  document.getElementById('num-cursadas').textContent = doneN;
+  document.getElementById('num-faltan').textContent = total - doneN;
+  document.getElementById('pct-text').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function buildCalendar() {
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+
+  Object.entries(DATA).forEach(([wd, row]) => {
+    const totalDays = Object.values(row.months).flat().length;
+    const doneDays = Object.entries(row.months).reduce((s, [m, days]) =>
+      s + days.filter(d => done[key(wd, m, d)]).length, 0);
+
+    const card = document.createElement('div');
+    card.className = `cal-row ${row.cls}`;
+
+    card.innerHTML = `
+      <div class="cal-row-header">
+        <div class="cal-row-icon">${row.icon}</div>
+        <div class="cal-row-info">
+          <div class="cal-row-day">${row.label}</div>
+          <div class="cal-row-materia">${row.materia}</div>
+        </div>
+        <div class="cal-row-count">${doneDays}/${totalDays}</div>
+      </div>
+      <div class="cal-months-wrap" id="months-${wd}"></div>
+    `;
+    grid.appendChild(card);
+
+    const wrap = document.getElementById(`months-${wd}`);
+    Object.entries(row.months).forEach(([month, days]) => {
+      if (!days.length) return;
+      const mrow = document.createElement('div');
+      mrow.className = 'month-row';
+      mrow.innerHTML = `<span class="month-tag">${month}</span><div class="days-wrap" id="days-${wd}-${month}"></div>`;
+      wrap.appendChild(mrow);
+
+      const daysWrap = document.getElementById(`days-${wd}-${month}`);
+      days.forEach(day => {
+        const btn = document.createElement('button');
+        btn.className = 'day-btn';
+        btn.textContent = day;
+        btn.dataset.key = key(wd, month, day);
+        if (done[key(wd, month, day)] || isPast(month, day) && !isToday(month, day)) {
+          if (!done[key(wd, month, day)] && isPast(month, day)) {
+            done[key(wd, month, day)] = true;
+          }
+          btn.classList.add('done');
+        }
+        if (isToday(month, day)) btn.classList.add('today');
+        btn.addEventListener('click', () => {
+          const k = btn.dataset.key;
+          done[k] = !done[k];
+          btn.classList.toggle('done', done[k]);
+          localStorage.setItem('fp_done', JSON.stringify(done));
+          // update counter on header
+          const countEl = card.querySelector('.cal-row-count');
+          const d2 = Object.entries(row.months).reduce((s, [m, ds]) =>
+            s + ds.filter(d => done[key(wd, m, d)]).length, 0);
+          countEl.textContent = `${d2}/${totalDays}`;
+          updateStats();
+          showToast(done[k] ? '✓ Clase tachada!' : 'Clase destachada');
+        });
+        daysWrap.appendChild(btn);
+      });
+    });
+  });
+}
+
+// Init: mark past as done if not explicitly set
+Object.entries(DATA).forEach(([wd, row]) => {
+  Object.entries(row.months).forEach(([month, days]) => {
+    days.forEach(day => {
+      const k = key(wd, month, day);
+      if (isPast(month, day) && !isToday(month, day) && !(k in done)) {
+        done[k] = true;
+      }
+    });
+  });
+});
+localStorage.setItem('fp_done', JSON.stringify(done));
+
+buildCalendar();
+updateStats();
+</script>
+</body>
+</html>
